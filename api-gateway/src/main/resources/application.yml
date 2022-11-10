@@ -1,0 +1,18 @@
+service:
+  user-service: ${user-service:http://localhost:8082}
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: content
+          uri: ${content-service:http://localhost:8081}/content
+          predicates:
+            - Path=/content/**
+        - id: user
+          uri: ${service.user-service}/user
+          predicates:
+            - Path=/user/**
+        - id: authenticate
+          uri: ${user-service:http://localhost:8082}/authenticate
+          predicates:
+            - Path=/authenticate/**
