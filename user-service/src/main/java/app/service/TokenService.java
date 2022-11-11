@@ -1,5 +1,7 @@
 package app.service;
 
+import app.controller.response.TokenInfo;
+import app.entity.User;
 import app.security.TokenUtil;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +15,17 @@ public class TokenService
         this.tokenUtil=tokenUtil;
         this.userService=userService;
     }
-    public boolean verify(String token)
+    public TokenInfo verify(String token)
     {
         if(tokenUtil.validate(token))
         {
             String username=tokenUtil.get(token,"username");
-            return userService.existsByUsername(username);
+            User user=userService.findByUsername(username);
+            if(user==null)
+                return new TokenInfo(false,null);
+            else
+                return new TokenInfo(true,user.getRole());
         }
-        return false;
+        return new TokenInfo(false,null);
     }
 }

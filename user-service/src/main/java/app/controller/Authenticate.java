@@ -1,8 +1,8 @@
 package app.controller;
 
 import app.controller.response.MessageResponse;
+import app.controller.response.TokenInfo;
 import app.controller.response.TokenResponse;
-import app.controller.response.TokenVerifyResponse;
 import app.entity.User;
 import app.security.TokenUtil;
 import app.service.TokenService;
@@ -46,9 +46,9 @@ public class Authenticate
             return new ResponseEntity<>(new MessageResponse(e.getMessage()),HttpStatus.UNAUTHORIZED);
         }
     }
-    @PostMapping("/verify")
-    public TokenVerifyResponse verify(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization)
+    @PostMapping("/info")
+    public TokenInfo verify(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization)
     {
-        return new TokenVerifyResponse(tokenService.verify(authorization.split("Bearer ")[1]));
+        return tokenService.verify(authorization.split("Bearer ")[1]);
     }
 }

@@ -1,10 +1,12 @@
 package app.entity;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name="users")
@@ -14,8 +16,12 @@ public class User implements UserDetails
     @SequenceGenerator(name="User_SEQUENCE_GENERATOR",sequenceName="User_SEQUENCE",allocationSize=1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE,generator="User_SEQUENCE_GENERATOR")
     private Long id;
-    private String username,password;
+    private String username,password,role;
     private boolean accountNonExpired,accountNonLocked,credentialsNonExpired,enabled;
+    public Collection<? extends GrantedAuthority> getAuthorities()
+    {
+        return List.of(new SimpleGrantedAuthority("ROLE_"+role));
+    }
     public boolean isAccountNonExpired()
     {
         return accountNonExpired;
@@ -64,10 +70,6 @@ public class User implements UserDetails
     {
         this.username=username;
     }
-    public Collection<? extends GrantedAuthority> getAuthorities()
-    {
-        return null;
-    }
     public String getPassword()
     {
         return password;
@@ -75,5 +77,13 @@ public class User implements UserDetails
     public void setPassword(String password)
     {
         this.password=password;
+    }
+    public String getRole()
+    {
+        return role;
+    }
+    public void setRole(String role)
+    {
+        this.role=role;
     }
 }
