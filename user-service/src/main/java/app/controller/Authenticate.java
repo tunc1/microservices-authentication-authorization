@@ -47,8 +47,8 @@ public class Authenticate
         }
     }
     @PostMapping("/info")
-    public TokenInfo verify(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization)
+    public TokenInfo info(@RequestHeader(HttpHeaders.AUTHORIZATION) String token)
     {
-        return tokenService.verify(authorization.split("Bearer ")[1]);
+        return tokenService.info(token);
     }
 }

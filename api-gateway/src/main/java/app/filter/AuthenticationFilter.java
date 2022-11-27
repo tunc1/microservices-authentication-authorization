@@ -1,7 +1,7 @@
 package app.filter;
 
-import app.client.UserServiceClient;
 import app.client.response.TokenInfo;
+import app.service.AuthenticationService;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.http.HttpMethod;
@@ -15,10 +15,10 @@ import reactor.core.publisher.Mono;
 @Component
 public class AuthenticationFilter implements GlobalFilter
 {
-    private UserServiceClient userServiceClient;
-    public AuthenticationFilter(UserServiceClient userServiceClient)
+    private AuthenticationService authenticationService;
+    public AuthenticationFilter(AuthenticationService authenticationService)
     {
-        this.userServiceClient=userServiceClient;
+        this.authenticationService=authenticationService;
     }
     public Mono<Void> filter(ServerWebExchange exchange,GatewayFilterChain chain)
     {
@@ -32,7 +32,8 @@ public class AuthenticationFilter implements GlobalFilter
         {
             if(authorization.contains("Bearer "))
             {
-                TokenInfo tokenInfo=userServiceClient.info(authorization);
+                String token=authorization.substring("Bearer ".length());
+                TokenInfo tokenInfo=authenticationService.tokenInfo(token);
                 if(tokenInfo.verified())
                 {
                     if(request.getMethod().equals(HttpMethod.POST)&&request.getPath().value().equals("/content"))

@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface UserServiceClient
 {
     @PostMapping("/authenticate/info")
-    TokenInfo info(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization);
+    TokenInfo info(@RequestHeader(HttpHeaders.AUTHORIZATION) String token);
 }

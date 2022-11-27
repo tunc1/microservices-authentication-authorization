@@ -1,6 +1,12 @@
 service:
   user-service: ${user-service:http://localhost:8082}
 spring:
+  redis:
+    host: localhost
+    port: 6379
+  cache:
+    redis:
+      time-to-live: 3600000
   cloud:
     gateway:
       routes:

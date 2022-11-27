@@ -1,3 +1,5 @@
 package app.client.response;
 
-public record TokenInfo(boolean verified,String role){}
+import java.io.Serializable;
+
+public record TokenInfo(boolean verified,String role) implements Serializable{}

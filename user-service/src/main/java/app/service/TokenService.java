@@ -15,7 +15,7 @@ public class TokenService
         this.tokenUtil=tokenUtil;
         this.userService=userService;
     }
-    public TokenInfo verify(String token)
+    public TokenInfo info(String token)
     {
         if(tokenUtil.validate(token))
         {
